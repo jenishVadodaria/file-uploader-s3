@@ -1,0 +1,40 @@
+.navbar {
+    position: fixed;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    padding: 0 2rem;
+    background: rgba(193, 140, 225, 1);
+    backdrop-filter: blur(31px);
+    -webkit-backdrop-filter: blur(31px);
+    color: #fff;
+}
+
+.user_image {
+    height: 42px;
+    width: 42px;
+    object-fit: cover;
+    border-radius: 30px;
+}
+
+.user-name {
+    margin-left: 1rem;
+    text-transform: capitalize;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: white;
+}
+
+.button-logout {
+    background: #e53935;
+    color: #ffff;
+    font-size: 1rem !important;
+    padding: 8px 18px;
+    font-family: Trebuchet MS, sans-serif;
+    border-radius: 10px;
+    border: 2px solid #e53935;
+    cursor: pointer;
+
+}

@@ -1,45 +1,57 @@
 import * as dotenv from "dotenv";
+// Load config
+dotenv.config()
 import express from "express";
-import { connectDB } from "./config/db.js"
+import { connectDB } from "./middleware/db.js"
 import morgan from "morgan";
 import passport from "passport";
-import passportFile from "./config/passport.js";
+import passportFile from "./middleware/passport.js";
 import session from "express-session";
-import indexRouter from "./routes/index.js";
+import { default as MongoStore } from "connect-mongo";
+import uploadRouter from "./routes/upload.js";
 import authRouter from "./routes/auth.js"
 import chalk from "chalk";
+import cors from "cors"
 
-// Load config
-dotenv.config({ path: './config/config.env' });
 
 // passport config
 passportFile(passport)
 
-// DB Connection
-connectDB()
-
 const app = express();
-
-// Logging
-if (process.env.ENVIRONMENT === 'development') {
-    app.use(morgan('dev'))
-}
 
 // Session
 app.use(session({
-    secret: 'Demo by Jenish',
+    store: MongoStore.create({ mongoUrl: process.env.DB_URL }),
+    secret: 'DemobyJenish',
     resave: false,
     saveUninitialized: false,
-    // store
 }))
 
 // Passport Middleware
 app.use(passport.initialize())
 app.use(passport.session())
 
+
+// parsing body req
+const corsOptions = {
+    origin: "http://localhost:3000",
+    credentials: true,
+};
+
+
+app.use(cors(corsOptions));
+app.use(express.json())
+
+
+// DB Connection
+connectDB()
+
+// Logging
+app.use(morgan('dev'))
+
 // Routes
-app.use('/', indexRouter)
 app.use('/auth', authRouter)
+app.use('/', uploadRouter)
 
 const PORT = process.env.PORT || 9000;
 
