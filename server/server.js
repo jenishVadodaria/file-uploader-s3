@@ -23,8 +23,8 @@ const app = express();
 app.use(session({
     store: MongoStore.create({ mongoUrl: process.env.DB_URL }),
     secret: 'DemobyJenish',
-    resave: false,
-    saveUninitialized: false,
+    resave: false,                                                 // setting to False means dont save a session, if nothing is modified.
+    saveUninitialized: false,                                      // Will not create a session until something is stored 
 }))
 
 // Passport Middleware

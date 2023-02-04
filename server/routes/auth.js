@@ -13,6 +13,7 @@ router.get('/google', passport.authenticate('google', { scope: ['profile'] }))
 // @route   GET /auth/google/callback
 router.get('/google/callback', passport.authenticate('google', { failureRedirect: "/login/failed" }),
     (req, res) => {
+        //Here req.session.passport.user will give the user_id after the user is serialized.
         res.redirect(`${CLIENT_URL}/upload`)
     })
 
@@ -21,7 +22,6 @@ router.get('/google/callback', passport.authenticate('google', { failureRedirect
 // @route   GET /auth/login/success
 router.get('/login/success', (req, res) => {
     if (req.user) {
-        console.log(req.user);
         res.status(200).json({
             success: true,
             message: "successfull",

@@ -40,7 +40,7 @@ export const getUploadedFile = async (req, res) => {
             }
 
             const command = new GetObjectCommand(getObjectParams);
-            const signedUrl = await getSignedUrl(s3, command, { expiresIn: 3600 });
+            const signedUrl = await getSignedUrl(s3, command, { expiresIn: 1800 });
             file.fileUrl = signedUrl
 
         }
