@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Login from '../login/Login'
-import { Route, Routes, Navigate } from 'react-router-dom'
+import { Route, Routes, Navigate, useLocation } from 'react-router-dom'
 import Upload from '../upload/Upload'
 import Logout from '../logout/Logout'
 import axios from 'axios'
@@ -8,6 +8,7 @@ import Navbar from '../navbar/Navbar'
 
 const Layout = () => {
     const [user, setUser] = useState(null);
+    let location = useLocation();
 
     useEffect(() => {
         const getUser = async () => {
@@ -24,7 +25,10 @@ const Layout = () => {
                 console.error(error)
             }
         }
-        getUser();
+
+        if (location.pathname === "/upload") {
+            getUser();
+        }
     }, []);
 
     return (
@@ -35,7 +39,7 @@ const Layout = () => {
             <Routes>
                 <Route
                     path='upload'
-                    element={user?.isAuthenticated ? <Upload googleId={user?.user?.googleId} /> : <Navigate to="/login" replace={true} />}
+                    element={user?.isAuthenticated ? <Upload token={user?.token} /> : <Navigate to="/login" replace={true} />}
                 />
                 <Route
                     path='/'

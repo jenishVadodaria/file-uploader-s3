@@ -3,7 +3,7 @@ import axios from "axios"
 import Files from '../files/Files';
 import "./upload.css"
 
-const Upload = ({ googleId }) => {
+const Upload = ({ token }) => {
     const [file, setFile] = useState()
     const [fileMessage, setFileMessage] = useState(null)
     const [loading, setLoading] = useState(false)
@@ -22,10 +22,11 @@ const Upload = ({ googleId }) => {
             setLoading(true)
             const formData = new FormData();
             formData.append("file", file)
-            formData.append("googleId", googleId)
+            formData.append("token", token)
 
             if (file) {
-                await axios.post("http://localhost:9000/upload", formData, { headers: { 'Content-Type': 'multipart/form-data' } })
+                await axios.post("http://localhost:9000/upload", formData,
+                    { headers: { 'Content-Type': 'multipart/form-data', "Authorization": `Bearer ${token}` } })
                 setFileMessage("File Uploaded Successfully")
                 setFile(null)
             }
@@ -57,7 +58,7 @@ const Upload = ({ googleId }) => {
                     }
                 </div>
             </form>
-            <Files googleId={googleId} loading={loading} />
+            <Files token={token} loading={loading} />
         </>
     )
 }

@@ -37,8 +37,17 @@ const UserSchema = new mongoose.Schema({
             type: String,
             required: true
         },
-        fileUrl: {
-            type: String
+        createdAt: {
+            type: Date,
+            default: Date.now
+        },
+        data: {
+            url: {
+                type: String
+            },
+            fields: {
+                type: Object
+            }
         },
     }],
     createdAt: {

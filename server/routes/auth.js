@@ -1,5 +1,8 @@
+import * as dotenv from "dotenv"
+dotenv.config();
 import express from "express";
 import passport from "passport";
+import jwt from "jsonwebtoken";
 
 const router = express.Router()
 
@@ -22,10 +25,20 @@ router.get('/google/callback', passport.authenticate('google', { failureRedirect
 // @route   GET /auth/login/success
 router.get('/login/success', (req, res) => {
     if (req.user) {
+
+        const { id, googleId, displayName, firstName, lastName, image, createdAt } = req.user
+        const limitedData = { googleId, displayName, firstName, lastName, image, createdAt }
+
+        // generate JWT token
+        const token = jwt.sign({ id: req.user.id }, process.env.JWT_SECRET, {
+            expiresIn: "24h"
+        });
+
         res.status(200).json({
             success: true,
             message: "successfull",
-            user: req.user,
+            token,
+            user: limitedData,
             isAuthenticated: req.isAuthenticated()
         })
     }
